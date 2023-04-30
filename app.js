@@ -7,7 +7,7 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
 app.use(express.urlencoded({ extended: true }));
-app.use(methodOverride('_method'));
+// app.use(methodOverride('_method'));
 
 const Studio = require('./models/studio');
 main().catch(err => console.log(err));
@@ -33,5 +33,5 @@ app.get('/studios', async (req, res) => {
 });
 
 app.get('/studios/new', (req, res) => {
-  res.render('studios/new');
+  res.render('studios/new')
 })
