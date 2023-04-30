@@ -27,5 +27,11 @@ app.get('/', (req, res) => {
   res.render('home')
 })
 
-app.get('/studios', (req, res) => {
+app.get('/studios', async (req, res) => {
+  const studios = await Studio.find({});
+  res.render('studios/index', { studios })
+});
+
+app.get('/studios/new', (req, res) => {
+  res.render('studios/new');
 })
