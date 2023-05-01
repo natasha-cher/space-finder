@@ -3,11 +3,17 @@ const app = express();
 const path = require('path');
 const mongoose = require('mongoose');
 const methodOverride = require('method-override');
+const morgan = require('morgan');
+const ejsMate = require('ejs-mate');
 
 app.set('views', path.join(__dirname, 'views'));
+
+app.engine('ejs', ejsMate);
 app.set('view engine', 'ejs');
+
 app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride('_method'));
+app.use(morgan('dev'))
 
 const Studio = require('./models/studio');
 main().catch(err => console.log(err));
@@ -62,4 +68,8 @@ app.delete('/studios/:id', async (req, res) => {
   const { id } = req.params;
   const studio = await Studio.findByIdAndDelete(id);
   res.redirect('/studios');
+})
+
+app.use((req, res) => {
+  res.status(404).send('Not Found');
 })

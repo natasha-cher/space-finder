@@ -1,22 +1,18 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Studio</title>
-</head>
-<body>
-  <h1><%= studio.name %></h1>
-  <p><%= studio.description %></p>
-  <p>Location: <%= studio.location %></p>
-  <p>Price: <%= studio.price %></p>
+<% layout('layouts/boilerplate') %>
+  <h1>
+    <%= studio.name %>
+  </h1>
+  <p>
+    <%= studio.description %>
+  </p>
+  <p>Location: <%= studio.location %>
+  </p>
+  <p>Price: <%= studio.price %>
+  </p>
   <footer>
     <a href="/studios/<%= studio._id %>/edit">Edit</a>
     <form action="/studios/<%= studio._id %>?_method=DELETE" method="POST">
-    <button>Delete</button>
+      <button>Delete</button>
     </form>
     <a href="/studios">All studios</a>
   </footer>
-</body>
-</html>
