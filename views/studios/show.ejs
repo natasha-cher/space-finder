@@ -9,6 +9,7 @@
   </p>
   <p>Price: <%= studio.price %>
   </p>
+  <img src="<%= studio.image %>" alt="">
   <footer>
     <a href="/studios/<%= studio._id %>/edit">Edit</a>
     <form action="/studios/<%= studio._id %>?_method=DELETE" method="POST">

@@ -3,10 +3,29 @@
     <a href="/studios/new">Add a studio</a>
   </div>
   <h1>All studios</h1>
-  <ul>
-    <% for(let studio of studios) { %>
-      <li><a href="/studios/<%= studio._id %>">
-          <%= studio.name %>
-        </a></li>
-      <% } %>
-  </ul>
+  <% for(let studio of studios) { %>
+    <div class="card mb-3" style="max-width: 540px;">
+      <div class="row g-0">
+        <div class="col-md-4">
+          <img src="<%= studio.image %>" class="img-fluid rounded-start" alt="studio image">
+        </div>
+        <div class="col-md-8">
+          <div class="card-body">
+            <h5 class="card-title">
+              <%= studio.name %>
+            </h5>
+            <p class="card-text">
+              <%= studio.description %>
+            </p>
+            <p class="card-text">
+              <%= studio.location %>
+            </p>
+            <p class="card-text"><small class="text-muted">
+              RMB<%= studio.price %>
+              </small></p>
+          </div>
+        </div>
+        <a href="/studios/<%=studio._id %>" class="btn btn-light">View details</a>
+      </div>
+    </div>
+  <% } %>
