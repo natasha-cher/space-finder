@@ -6,6 +6,8 @@ const methodOverride = require('method-override');
 const morgan = require('morgan');
 const ejsMate = require('ejs-mate');
 const dotenv = require('dotenv');
+dotenv.config()
+const unsplashAccessKey = process.env.UNSPLASH_ACCESS_KEY;
 
 app.set('views', path.join(__dirname, 'views'));
 
