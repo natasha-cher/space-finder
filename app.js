@@ -31,11 +31,17 @@ app.get('/studios', async (req, res) => {
   res.render('studios/index', { studios })
 });
 
+app.get('/studios/new', (req, res) => {
+  res.render('studios/new')
+})
+
 app.get('/studios/:id', async (req, res) => {
   const studio = await Studio.findById(req.params.id);
   res.render('studios/show', { studio });
 });
 
-app.get('/studios/new', (req, res) => {
-  res.render('studios/new')
+app.post('/studios', async (req, res) => {
+  const studio = new Studio(req.body.studio);
+  await studio.save();
+  res.redirect(`studios/${ studio._id }`)
 })
