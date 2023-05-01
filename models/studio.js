@@ -5,7 +5,8 @@ const StudioSchema = new Schema ({
   name: String,
   price: String,
   description: String,
-  location: String
+  location: String,
+  image: String
 })
 
 module.exports = mongoose.model('Studio', StudioSchema)

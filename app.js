@@ -5,6 +5,7 @@ const mongoose = require('mongoose');
 const methodOverride = require('method-override');
 const morgan = require('morgan');
 const ejsMate = require('ejs-mate');
+const dotenv = require('dotenv');
 
 app.set('views', path.join(__dirname, 'views'));
 

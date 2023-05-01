@@ -1,4 +1,7 @@
 const mongoose = require('mongoose');
+const unsplashAccessKey = process.env.UNSPLASH_ACCESS_KEY;
+const dotenv = require('dotenv');
+
 const Studio = require('../models/studio');
 const studiospaces = require('./studiospaces');
 main().catch(err => console.log(err));
@@ -16,7 +19,8 @@ const seedDB = async () => {
       name: studiospace.name,
       price: studiospace.price,
       description: studiospace.description,
-      location: studiospace.location
+      location: studiospace.location,
+      image: `https://api.unsplash.com/photos/random?client_id=${unsplashAccessKey}&collections=p4e9nqGPzaA`
     });
     try {
       await studio.save();
