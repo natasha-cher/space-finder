@@ -1,19 +1,32 @@
-<% layout('layouts/boilerplate') %>
-  <h1>
-    <%= studio.name %>
-  </h1>
-  <p>
-    <%= studio.description %>
-  </p>
-  <p>Location: <%= studio.location %>
-  </p>
-  <p>Price: <%= studio.price %>
-  </p>
-  <img src="<%= studio.image %>" alt="" style="max-width: 540px;">
-  <footer>
-    <a href="/studios/<%= studio._id %>/edit">Edit</a>
-    <form action="/studios/<%= studio._id %>?_method=DELETE" method="POST">
-      <button>Delete</button>
-    </form>
-    <a href="/studios">All studios</a>
-  </footer>
+<% layout('layouts/boilerplate')%>
+
+  <div class="row">
+    <div class="col-6 offset-3">
+      <div class="card mb-3">
+        <img src="<%= studio.image %>" class="card-img-top" alt="...">
+        <div class="card-body">
+          <h5 class="card-title">
+            <%= studio.name %>
+          </h5>
+          <p class="card-text">
+            <%= studio.description %>
+          </p>
+        </div>
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item text-muted">
+            <%= studio.location %>
+          </li>
+          <li class="list-group-item">RMB<%= studio.price %>/day</li>
+        </ul>
+        <div class="card-body">
+          <a class="card-link btn btn-info" href="/studios/<%=studio._id%>/edit">Edit</a>
+          <form class="d-inline" action="/studios/<%=studio._id%>?_method=DELETE" method="POST">
+            <button class="btn btn-danger">Delete</button>
+          </form>
+        </div>
+        <div class="card-footer text-muted">
+          2 days ago
+        </div>
+      </div>
+    </div>
+  </div>
