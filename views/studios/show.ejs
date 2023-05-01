@@ -12,6 +12,10 @@
   <p>Location: <%= studio.location %></p>
   <p>Price: <%= studio.price %></p>
   <footer>
+    <a href="/studios/<%= studio._id %>/edit">Edit</a>
+    <form action="/studios/<%= studio._id %>?_method=DELETE" method="POST">
+    <button>Delete</button>
+    </form>
     <a href="/studios">All studios</a>
   </footer>
 </body>
