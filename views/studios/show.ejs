@@ -4,14 +4,12 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Studios</title>
+  <title>Studio</title>
 </head>
 <body>
-<h1>All studios</h1>
-<ul>
- <% for(let studio of studios) { %>
-  <li><a href="<%= studio._id %>"><%= studio.name %></a></li>
- <% } %>
-</ul>
+  <h1><%= studio.name %></h1>
+  <p><%= studio.description %></p>
+  <p>Location: <%= studio.location %></p>
+  <p>Price: <%= studio.price %></p>
 </body>
 </html>
