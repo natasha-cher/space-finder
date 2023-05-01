@@ -9,7 +9,7 @@
   </p>
   <p>Price: <%= studio.price %>
   </p>
-  <img src="<%= studio.image %>" alt="">
+  <img src="<%= studio.image %>" alt="" style="max-width: 540px;">
   <footer>
     <a href="/studios/<%= studio._id %>/edit">Edit</a>
     <form action="/studios/<%= studio._id %>?_method=DELETE" method="POST">
