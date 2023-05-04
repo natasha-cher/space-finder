@@ -7,7 +7,9 @@ const morgan = require('morgan');
 const ejsMate = require('ejs-mate');
 const dotenv = require('dotenv');
 const ExpressError = require('./helpers/ExpressError');
+const { studioSchema } = require('./schemas.js');
 const catchAsync = require('./helpers/catchAsync');
+const Joi = require('joi');
 dotenv.config()
 const unsplashAccessKey = process.env.UNSPLASH_ACCESS_KEY;
 
@@ -18,6 +20,17 @@ app.set('view engine', 'ejs');
 
 app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride('_method'));
+
+const validateStudio = (req, res, next) => {
+  const { error } = studioSchema.validate(req.body);
+  if (error) {
+      const msg = error.details.map(el => el.message).join(',')
+      throw new ExpressError(msg, 400)
+  } else {
+      next();
+  }
+}
+
 app.use(morgan('dev'))
 
 const Studio = require('./models/studio');
@@ -46,7 +59,7 @@ app.get('/studios/new', (req, res) => {
   res.render('studios/new')
 })
 
-app.post('/studios', catchAsync(async (req, res, next) => {
+app.post('/studios', validateStudio, catchAsync(async (req, res, next) => {
   const studio = new Studio(req.body.studio);
   await studio.save();
   res.redirect(`studios/${studio._id}`)
@@ -62,7 +75,7 @@ app.get('/studios/:id/edit', catchAsync(async (req, res) => {
   res.render('studios/edit', { studio });
 }))
 
-app.put('/studios/:id', catchAsync(async (req, res) => {
+app.put('/studios/:id', validateStudio, catchAsync(async (req, res) => {
   const { id } = req.params;
   const studio = await Studio.findByIdAndUpdate(id, { ...req.body.studio });
   res.redirect(`/studios/${studio._id}`);
@@ -74,8 +87,14 @@ app.delete('/studios/:id', catchAsync(async (req, res) => {
   res.redirect('/studios');
 }));
 
+app.all('*', (req, res, next) => {
+  next(new ExpressError('Page Not Found', 404))
+})
+
 app.use((err, req, res, next) => {
-  res.send('Something went wrong...')
+  const { statusCode = 500 } = err;
+  if (!err.message) err.message = 'Something Went Wrong...'
+  res.status(statusCode).render('error', { err })
 })
 
 app.use((req, res) => {
