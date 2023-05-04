@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 
 const StudioSchema = new Schema ({
   name: String,
-  price: String,
+  price: Number,
   description: String,
   location: String,
   image: String
