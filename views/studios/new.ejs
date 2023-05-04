@@ -2,31 +2,31 @@
 <div class="row">
     <h1 class="text-center">Rent your studio</h1>
     <div class="col-6 offset-3">
-        <form action="/studios" method="POST">
+        <form action="/studios" method="POST" novalidate class="validated-form">
             <div class="mb-3">
                 <label class="form-label" for="name">Title</label>
-                <input class="form-control" type="text" id="name" name="studio[name]">
+                <input class="form-control" type="text" id="name" name="studio[name]" required>
             </div>
             <div class="mb-3">
                 <label class="form-label" for="location">Location</label>
-                <input class="form-control" type="text" id="location" name="studio[location]">
+                <input class="form-control" type="text" id="location" name="studio[location]" required>
             </div>
             <div class="mb-3">
                 <label class="form-label" for="image">Image Url</label>
-                <input class="form-control" type="text" id="image" name="studio[image]">
+                <input class="form-control" type="text" id="image" name="studio[image]" required>
             </div>
             <div class="mb-3">
                 <label class="form-label" for="price">Campground Price</label>
                 <div class="input-group">
                     <span class="input-group-text" id="price-label">RMB</span>
                     <input type="text" class="form-control" id="price" placeholder="0.00" aria-label="price"
-                        aria-describedby="price-label" name="studio[price]">
+                        aria-describedby="price-label" name="studio[price] required">
                 </div>
             </div>
 
             <div class="mb-3">
                 <label class="form-label" for="description">Description</label>
-                <textarea class="form-control" type="text" id="description" name="studio[description]"></textarea>
+                <textarea class="form-control" type="text" id="description" name="studio[description]" required></textarea>
             </div>
             <div class="mb-3">
                 <button class="btn btn-success">Submit</button>
