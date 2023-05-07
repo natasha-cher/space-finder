@@ -7,7 +7,7 @@ const morgan = require('morgan');
 const ejsMate = require('ejs-mate');
 const dotenv = require('dotenv');
 const ExpressError = require('./helpers/ExpressError');
-const { studioSchema } = require('./schemas.js');
+const { studioSchema, reviewSchema } = require('./schemas.js');
 const catchAsync = require('./helpers/catchAsync');
 const Joi = require('joi');
 dotenv.config()
