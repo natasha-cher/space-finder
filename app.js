@@ -78,7 +78,7 @@ app.post('/studios', validateStudio, catchAsync(async (req, res, next) => {
 }))
 
 app.get('/studios/:id', catchAsync(async (req, res) => {
-  const studio = await Studio.findById(req.params.id);
+  const studio = await Studio.findById(req.params.id).populate('reviews');
   res.render('studios/show', { studio });
 }))
 
@@ -106,6 +106,13 @@ app.post('/studios/:id/reviews', validateReview, catchAsync(async (req, res) => 
   await review.save();
   await studio.save();
   res.redirect(`/studios/${studio._id}`);
+}))
+
+app.delete('/studios/:id/reviews/:reviewId', catchAsync(async (req, res) => {
+  const { id, reviewId } = req.params;
+  await Campground.findByIdAndUpdate(id, { $pull: { reviews: reviewId } });
+  await Review.findByIdAndDelete(reviewId);
+  res.redirect(`/campgrounds/${id}`);
 }))
 
 app.all('*', (req, res, next) => {
