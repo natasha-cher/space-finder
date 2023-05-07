@@ -31,9 +31,21 @@ const validateStudio = (req, res, next) => {
   }
 }
 
+const validateReview = (req, res, next) => {
+  const { error } = reviewSchema.validate(req.body);
+  if (error) {
+      const msg = error.details.map(el => el.message).join(',')
+      throw new ExpressError(msg, 400)
+  } else {
+      next();
+  }
+}
+
 app.use(morgan('dev'))
 
 const Studio = require('./models/studio');
+const Review = require('./models/review');
+
 main().catch(err => console.log(err));
 
 async function main() {
@@ -86,6 +98,15 @@ app.delete('/studios/:id', catchAsync(async (req, res) => {
   const studio = await Studio.findByIdAndDelete(id);
   res.redirect('/studios');
 }));
+
+app.post('/studios/:id/reviews', validateReview, catchAsync(async (req, res) => {
+  const studio = await Studio.findById(req.params.id);
+  const review = new Review(req.body.review);
+  studio.reviews.push(review);
+  await review.save();
+  await studio.save();
+  res.redirect(`/studios/${studio._id}`);
+}))
 
 app.all('*', (req, res, next) => {
   next(new ExpressError('Page Not Found', 404))
