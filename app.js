@@ -3,11 +3,11 @@ const app = express();
 const path = require('path');
 const mongoose = require('mongoose');
 const methodOverride = require('method-override');
-const morgan = require('morgan');
 const ejsMate = require('ejs-mate');
 const dotenv = require('dotenv');
 const ExpressError = require('./helpers/ExpressError');
 const { studioSchema, reviewSchema } = require('./schemas.js');
+const studios = require('./routes/studios');
 const catchAsync = require('./helpers/catchAsync');
 const Joi = require('joi');
 dotenv.config()
@@ -21,16 +21,6 @@ app.set('view engine', 'ejs');
 app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride('_method'));
 
-const validateStudio = (req, res, next) => {
-  const { error } = studioSchema.validate(req.body);
-  if (error) {
-      const msg = error.details.map(el => el.message).join(',')
-      throw new ExpressError(msg, 400)
-  } else {
-      next();
-  }
-}
-
 const validateReview = (req, res, next) => {
   const { error } = reviewSchema.validate(req.body);
   if (error) {
@@ -40,8 +30,6 @@ const validateReview = (req, res, next) => {
       next();
   }
 }
-
-app.use(morgan('dev'))
 
 const Studio = require('./models/studio');
 const Review = require('./models/review');
@@ -57,47 +45,11 @@ app.listen(3000, () => {
   console.log('listening on http://localhost/3000')
 });
 
+app.use('/studios', studios );
 
 app.get('/', (req, res) => {
   res.render('home')
 });
-
-app.get('/studios', catchAsync(async (req, res) => {
-  const studios = await Studio.find({});
-  res.render('studios/index', { studios })
-}))
-
-app.get('/studios/new', (req, res) => {
-  res.render('studios/new')
-})
-
-app.post('/studios', validateStudio, catchAsync(async (req, res, next) => {
-  const studio = new Studio(req.body.studio);
-  await studio.save();
-  res.redirect(`studios/${studio._id}`)
-}))
-
-app.get('/studios/:id', catchAsync(async (req, res) => {
-  const studio = await Studio.findById(req.params.id).populate('reviews');
-  res.render('studios/show', { studio });
-}))
-
-app.get('/studios/:id/edit', catchAsync(async (req, res) => {
-  const studio = await Studio.findById(req.params.id);
-  res.render('studios/edit', { studio });
-}))
-
-app.put('/studios/:id', validateStudio, catchAsync(async (req, res) => {
-  const { id } = req.params;
-  const studio = await Studio.findByIdAndUpdate(id, { ...req.body.studio });
-  res.redirect(`/studios/${studio._id}`);
-}))
-
-app.delete('/studios/:id', catchAsync(async (req, res) => {
-  const { id } = req.params;
-  const studio = await Studio.findByIdAndDelete(id);
-  res.redirect('/studios');
-}));
 
 app.post('/studios/:id/reviews', validateReview, catchAsync(async (req, res) => {
   const studio = await Studio.findById(req.params.id);
