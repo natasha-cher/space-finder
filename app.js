@@ -8,6 +8,7 @@ const dotenv = require('dotenv');
 const ExpressError = require('./helpers/ExpressError');
 const { studioSchema, reviewSchema } = require('./schemas.js');
 const studios = require('./routes/studios');
+const reviews = require('./routes/reviews');
 const catchAsync = require('./helpers/catchAsync');
 const Joi = require('joi');
 dotenv.config()
@@ -20,16 +21,6 @@ app.set('view engine', 'ejs');
 
 app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride('_method'));
-
-const validateReview = (req, res, next) => {
-  const { error } = reviewSchema.validate(req.body);
-  if (error) {
-      const msg = error.details.map(el => el.message).join(',')
-      throw new ExpressError(msg, 400)
-  } else {
-      next();
-  }
-}
 
 const Studio = require('./models/studio');
 const Review = require('./models/review');
@@ -46,26 +37,12 @@ app.listen(3000, () => {
 });
 
 app.use('/studios', studios );
+app.use('/studios/:id/reviews', reviews );
 
 app.get('/', (req, res) => {
   res.render('home')
 });
 
-app.post('/studios/:id/reviews', validateReview, catchAsync(async (req, res) => {
-  const studio = await Studio.findById(req.params.id);
-  const review = new Review(req.body.review);
-  studio.reviews.push(review);
-  await review.save();
-  await studio.save();
-  res.redirect(`/studios/${studio._id}`);
-}))
-
-app.delete('/studios/:id/reviews/:reviewId', catchAsync(async (req, res) => {
-  const { id, reviewId } = req.params;
-  await Campground.findByIdAndUpdate(id, { $pull: { reviews: reviewId } });
-  await Review.findByIdAndDelete(reviewId);
-  res.redirect(`/campgrounds/${id}`);
-}))
 
 app.all('*', (req, res, next) => {
   next(new ExpressError('Page Not Found', 404))
