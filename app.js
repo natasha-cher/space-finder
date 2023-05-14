@@ -36,6 +36,13 @@ const sessionConfig = {
   }
 }
 app.use(session(sessionConfig))
+app.use(flash());
+
+app.use((req, res, next) => {
+  res.locals.success = req.flash('success');
+  res.locals.error = req.flash('error');
+  next();
+})
 
 const Studio = require('./models/studio');
 const Review = require('./models/review');
@@ -53,13 +60,6 @@ app.listen(3000, () => {
 
 app.use('/studios', studios );
 app.use('/studios/:id/reviews', reviews );
-app.use(flash());
-
-app.use((req, res, next) => {
-  res.locals.success = req.flash('success');
-  res.locals.error = req.flash('error');
-  next();
-})
 
 app.get('/', (req, res) => {
   res.render('home')

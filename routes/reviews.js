@@ -22,6 +22,7 @@ router.post('/', validateReview, catchAsync(async (req, res) => {
   studio.reviews.push(review);
   await review.save();
   await studio.save();
+  req.flash('success', 'Successfully posted a review');
   res.redirect(`/studios/${studio._id}`);
 }))
 
@@ -29,6 +30,7 @@ router.delete('/:reviewId', catchAsync(async (req, res) => {
   const { id, reviewId } = req.params;
   await Studio.findByIdAndUpdate(id, { $pull: { reviews: reviewId } });
   await Review.findByIdAndDelete(reviewId);
+  req.flash('success', 'Successfully deleted a review');
   res.redirect(`/studios/${id}`);
 }))
 
