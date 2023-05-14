@@ -2,6 +2,7 @@ const express = require('express');
 const app = express();
 const path = require('path');
 const session = require('express-session');
+const flash = require('connect-flash');
 const mongoose = require('mongoose');
 const methodOverride = require('method-override');
 const ejsMate = require('ejs-mate');
@@ -52,6 +53,13 @@ app.listen(3000, () => {
 
 app.use('/studios', studios );
 app.use('/studios/:id/reviews', reviews );
+app.use(flash());
+
+app.use((req, res, next) => {
+  res.locals.success = req.flash('success');
+  res.locals.error = req.flash('error');
+  next();
+})
 
 app.get('/', (req, res) => {
   res.render('home')

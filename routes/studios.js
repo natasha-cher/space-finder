@@ -27,6 +27,7 @@ router.get('/new', (req, res) => {
 router.post('/', validateStudio, catchAsync(async (req, res, next) => {
   const studio = new Studio(req.body.studio);
   await studio.save();
+  req.flash('success', 'Successfully added a studio');
   res.redirect(`studios/${studio._id}`)
 }))
 
