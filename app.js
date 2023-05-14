@@ -15,6 +15,7 @@ const catchAsync = require('./helpers/catchAsync');
 const Joi = require('joi');
 dotenv.config()
 const unsplashAccessKey = process.env.UNSPLASH_ACCESS_KEY;
+const sessionSecret = process.env.SESSION_SECRET;
 
 app.set('views', path.join(__dirname, 'views'));
 
@@ -26,7 +27,7 @@ app.use(methodOverride('_method'));
 app.use(express.static(path.join(__dirname, 'public')));
 
 const sessionConfig = {
-  secret: 'secret',
+  secret: sessionSecret,
   resave: false,
   saveUninitialized: true,
   cookie: {
