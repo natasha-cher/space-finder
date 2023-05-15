@@ -55,10 +55,6 @@ async function main() {
   console.log('mongoose connected successfully');
 }
 
-app.listen(3000, () => {
-  console.log('listening on http://localhost/3000')
-});
-
 app.use('/studios', studios );
 app.use('/studios/:id/reviews', reviews );
 
@@ -80,3 +76,7 @@ app.use((err, req, res, next) => {
 app.use((req, res) => {
   res.status(404).send('Not Found');
 })
+
+app.listen(3000, () => {
+  console.log('listening on http://localhost/3000')
+});
