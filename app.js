@@ -10,8 +10,11 @@ const ejsMate = require('ejs-mate');
 const dotenv = require('dotenv');
 const ExpressError = require('./helpers/ExpressError');
 const { studioSchema, reviewSchema } = require('./schemas.js');
-const studios = require('./routes/studios');
-const reviews = require('./routes/reviews');
+
+const studioRoutes = require('./routes/studios');
+const reviewRoutes = require('./routes/reviews');
+const userRoutes = require('./routes/users');
+
 const catchAsync = require('./helpers/catchAsync');
 const Joi = require('joi');
 dotenv.config()
@@ -67,8 +70,9 @@ async function main() {
   console.log('mongoose connected successfully');
 }
 
-app.use('/studios', studios );
-app.use('/studios/:id/reviews', reviews );
+app.use('/studios', studioRoutes );
+app.use('/users', userRoutes );
+app.use('/studios/:id/reviews', reviewRoutes );
 
 app.get('/', (req, res) => {
   res.render('home')

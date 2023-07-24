@@ -1,5 +1,12 @@
 express = require('express');
 const router = express.Router();
+const catchAsync = require('../helpers/catchAsync');
+const ExpressError = require('../helpers/ExpressError');
+const User = require('../models/user');
+const passport = require('passport');
+const LocalStrategy = require('passport-local');
+
+const { userSchema } = require('../schemas.js');
 
 router.get('/register', (req, res) => {
   res.render('users/register');
