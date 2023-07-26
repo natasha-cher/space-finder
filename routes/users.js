@@ -24,7 +24,7 @@ router.post('/register', catchAsync(async (req, res, next) => {
       })
   } catch (e) {
       req.flash('error', e.message);
-      res.redirect('register');
+      res.redirect('/register');
   }
 }));
 
@@ -36,7 +36,7 @@ router.post('/login', passport.authenticate('local', { failureFlash: true, failu
   req.flash('success', 'Welcome back!');
   const redirectUrl = req.session.returnTo || '/studios';
   delete req.session.returnTo;
-  res.redirect(redirectUrl);
+  res.redirect('/studios');
 })
 
 router.get('/logout', (req, res) => {
